@@ -1,9 +1,48 @@
 # Интернет-магазин футбольной атрибутики
 ## Кучер Артем ЭФМО-02-24
 
+## Запуск проекта
+### 1. Клонирование репозитория
+```
+git clone https://github.com/KucherArtyom/Online-store-of-football-products.git
+cd Online-store-of-football-products
+```
+### 2. Настройка базы данных PostgreSQL
+```
+createdb footballstore
+psql footballstore < footballstore.sql
+```
+### 3. Настройка бэкенда (Go)
+```
+cd backend
+```
+Создайте файл .env:
+```
+APP_ENV=development
+SERVER_PORT=8080
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=ваш_пароль
+DB_NAME=footballstore
+```
+
+```
+go mod download
+go run main.go
+```
+### 4. Настройка фронтенда (Vue.js)
+```
+cd frontend
+npm install
+npm run dev
+```
+
 ## Схема базы данных
+![Схема базы данных](https://github.com/user-attachments/assets/148d24bc-2810-45ba-ab24-5553367a4bfe)
 
-
+## Диаграмма последовательности "Процесс оформления заказа"
+![Диаграмма последовательности Процесс оформления заказа](https://github.com/user-attachments/assets/43ed3674-76c7-42f7-ab69-e1ed7c8f04b8)
 
 ## Главная страница сайта
 ![Главная страница](https://github.com/user-attachments/assets/09facf58-cd42-4c8d-bfa1-3b94cc3fc11f)
