@@ -1,0 +1,566 @@
+definitions:
+  models.Address:
+    properties:
+      apartment:
+        type: integer
+      city:
+        type: string
+      country:
+        type: string
+      house:
+        type: integer
+      street:
+        type: string
+    type: object
+  models.LoginRequest:
+    properties:
+      login:
+        maxLength: 100
+        minLength: 3
+        type: string
+      password:
+        maxLength: 100
+        minLength: 6
+        type: string
+    required:
+    - login
+    - password
+    type: object
+  models.OrderRequest:
+    properties:
+      address:
+        $ref: '#/definitions/models.Address'
+      card_number:
+        type: string
+      customer_id:
+        type: integer
+      order_price:
+        type: number
+      products:
+        items:
+          type: integer
+        type: array
+    type: object
+  models.Product:
+    properties:
+      category_id:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      manufacturer:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      stock_quantity:
+        type: integer
+    type: object
+  models.Request:
+    properties:
+      product_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  models.Request2:
+    properties:
+      user_id:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      id:
+        type: integer
+      login:
+        maxLength: 100
+        minLength: 3
+        type: string
+      name:
+        maxLength: 20
+        minLength: 2
+        type: string
+      password:
+        maxLength: 100
+        minLength: 6
+        type: string
+      patronymic:
+        maxLength: 20
+        type: string
+      surname:
+        maxLength: 20
+        minLength: 2
+        type: string
+      telephone:
+        type: string
+    required:
+    - login
+    - name
+    - password
+    - surname
+    - telephone
+    type: object
+info:
+  contact: {}
+paths:
+  /api/basket:
+    get:
+      description: Получение товаров в корзине для данного пользователя
+      parameters:
+      - description: ID пользователя
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список товаров в корзине
+          schema:
+            items:
+              $ref: '#/definitions/models.Product'
+            type: array
+        "400":
+          description: Неверный ID пользователя
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Корзина не найдена
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Получить корзину пользователя
+      tags:
+      - basket
+  /api/basket/add:
+    post:
+      consumes:
+      - application/json
+      description: Добавление товара в корзину для пользователя
+      parameters:
+      - description: ID пользователя и ID товара
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Ошибка при валидации
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Товар или пользователь не найдены
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Добавить товар в корзину
+      tags:
+      - basket
+  /api/basket/clear:
+    post:
+      consumes:
+      - application/json
+      description: Удаление всех товаров из корзины для данного пользователя
+      parameters:
+      - description: ID пользователя
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Request2'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Ошибка при валидации
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Очистить корзину пользователя
+      tags:
+      - basket
+  /api/basket/remove:
+    post:
+      consumes:
+      - application/json
+      description: Удаление товара из корзины для пользователя
+      parameters:
+      - description: ID пользователя и ID товара
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Ошибка при валидации
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Товар или пользователь не найдены
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Удалить товар из корзины
+      tags:
+      - basket
+  /api/favorites:
+    get:
+      description: Получение списка избранных товаров для данного пользователя
+      parameters:
+      - description: ID пользователя
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список избранных товаров
+          schema:
+            items:
+              $ref: '#/definitions/models.Product'
+            type: array
+        "400":
+          description: Неверный ID пользователя
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Избранное не найдено
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Получить избранное пользователя
+      tags:
+      - favorites
+  /api/favorites/add:
+    post:
+      consumes:
+      - application/json
+      description: Добавление товара в список избранного для пользователя
+      parameters:
+      - description: ID пользователя и ID товара
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Ошибка при валидации
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Товар или пользователь не найдены
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Добавить товар в избранное
+      tags:
+      - favorites
+  /api/favorites/remove:
+    post:
+      consumes:
+      - application/json
+      description: Удаление товара из списка избранного для пользователя
+      parameters:
+      - description: ID пользователя и ID товара
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Ошибка при валидации
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Товар или пользователь не найдены
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Удалить товар из избранного
+      tags:
+      - favorites
+  /api/login:
+    post:
+      consumes:
+      - application/json
+      description: Авторизация пользователя по логину и паролю
+      parameters:
+      - description: Логин и пароль
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ с токеном
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Ошибка при валидации
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Неверный логин или пароль
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Авторизация пользователя
+      tags:
+      - auth
+  /api/orders:
+    post:
+      consumes:
+      - application/json
+      description: Создание заказа на основе выбранных товаров и данных покупателя
+      parameters:
+      - description: Данные заказа
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/models.OrderRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Успешный ответ с ID заказа
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Ошибка при валидации
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Создание нового заказа
+      tags:
+      - orders
+  /api/products:
+    get:
+      description: Получение списка всех товаров в магазине
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список товаров
+          schema:
+            items:
+              $ref: '#/definitions/models.Product'
+            type: array
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Получение всех товаров
+      tags:
+      - products
+  /api/products/{id}:
+    get:
+      description: Получение товара по его уникальному идентификатору
+      parameters:
+      - description: ID товара
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Товар
+          schema:
+            $ref: '#/definitions/models.Product'
+        "400":
+          description: Неверный ID
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Товар не найден
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Получение товара по ID
+      tags:
+      - products
+  /api/products/category/{category_id}:
+    get:
+      description: Получение товаров по идентификатору категории
+      parameters:
+      - description: ID категории
+        in: path
+        name: category_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список товаров
+          schema:
+            items:
+              $ref: '#/definitions/models.Product'
+            type: array
+        "400":
+          description: Неверный ID категории
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Товары не найдены
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Получение товаров по категории
+      tags:
+      - products
+  /api/register:
+    post:
+      consumes:
+      - application/json
+      description: Регистрация нового пользователя в системе
+      parameters:
+      - description: Данные пользователя
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Успешный ответ
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Ошибка при валидации
+          schema:
+            additionalProperties: true
+            type: object
+        "409":
+          description: Логин уже существует
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Регистрация пользователя
+      tags:
+      - auth
+swagger: "2.0"

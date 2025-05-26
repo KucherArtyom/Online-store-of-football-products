@@ -1,0 +1,232 @@
+{"level":"info","msg":"Starting application","time":"2025-05-20T00:01:38+03:00"}
+{"error":"sql: unknown driver \"postgres\" (forgotten import?)","level":"fatal","msg":"Failed to initialize DB","time":"2025-05-20T00:01:38+03:00"}
+{"level":"info","msg":"Starting application","time":"2025-05-20T00:02:02+03:00"}
+{"error":"sql: unknown driver \"postgres\" (forgotten import?)","level":"fatal","msg":"Failed to initialize DB","time":"2025-05-20T00:02:02+03:00"}
+{"level":"info","msg":"Starting application","time":"2025-05-20T00:03:34+03:00"}
+{"level":"info","msg":"Server is running","port":"8080","time":"2025-05-20T00:03:34+03:00"}
+{"level":"info","msg":"Register endpoint called","time":"2025-05-20T00:05:25+03:00"}
+{"level":"info","msg":"User registered successfully","time":"2025-05-20T00:05:25+03:00","user_id":15}
+{"level":"info","msg":"Register endpoint called","time":"2025-05-20T00:15:22+03:00"}
+{"level":"info","msg":"User registered successfully","time":"2025-05-20T00:15:22+03:00","user_id":16}
+{"level":"info","msg":"Starting application","time":"2025-05-20T11:31:31+03:00"}
+{"level":"info","msg":"Server is running","port":"8080","time":"2025-05-20T11:31:31+03:00"}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T11:31:59+03:00"}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-20T11:31:59+03:00"}
+{"count":1,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T11:31:59+03:00","user_id":16}
+{"count":1,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-20T11:31:59+03:00","user_id":16}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-20T11:32:05+03:00"}
+{"level":"info","msg":"User logged in successfully","time":"2025-05-20T11:32:05+03:00","user_id":1}
+{"level":"info","msg":"AddFavorite endpoint called","time":"2025-05-20T11:32:30+03:00"}
+{"level":"info","msg":"Product added to favorites successfully","product_id":17,"time":"2025-05-20T11:32:30+03:00","user_id":1}
+{"level":"info","msg":"AddFavorite endpoint called","time":"2025-05-20T11:32:32+03:00"}
+{"level":"info","msg":"Product added to favorites successfully","product_id":18,"time":"2025-05-20T11:32:32+03:00","user_id":1}
+{"level":"info","msg":"Starting application","time":"2025-05-20T16:28:02+03:00"}
+{"level":"info","msg":"Server is running","port":"8080","time":"2025-05-20T16:28:02+03:00"}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T16:29:12+03:00"}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-20T16:29:12+03:00"}
+{"count":4,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T16:29:12+03:00","user_id":1}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-20T16:29:12+03:00","user_id":1}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T16:29:44+03:00"}
+{"count":4,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T16:29:44+03:00","user_id":1}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-20T16:29:48+03:00"}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-20T16:29:48+03:00","user_id":1}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-20T16:30:58+03:00"}
+{"level":"info","msg":"User logged in successfully","time":"2025-05-20T16:30:58+03:00","user_id":1}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T16:31:02+03:00"}
+{"count":4,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T16:31:02+03:00","user_id":1}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-20T16:31:03+03:00"}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-20T16:31:03+03:00","user_id":1}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-20T16:31:05+03:00"}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-20T16:31:05+03:00","user_id":1}
+{"level":"info","msg":"CreateOrder endpoint called","time":"2025-05-20T16:31:32+03:00"}
+{"customer_id":1,"item_count":2,"level":"info","msg":"Order created successfully","order_id":4,"time":"2025-05-20T16:31:32+03:00"}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T16:42:29+03:00"}
+{"count":4,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T16:42:29+03:00","user_id":1}
+{"level":"info","msg":"RemoveFavorite endpoint called","time":"2025-05-20T16:42:32+03:00"}
+{"level":"info","msg":"Removing product from favorites","product_id":9,"time":"2025-05-20T16:42:32+03:00","user_id":1}
+{"level":"info","msg":"Product removed from favorites","product_id":9,"time":"2025-05-20T16:42:32+03:00","user_id":1}
+{"level":"info","msg":"RemoveFavorite endpoint called","time":"2025-05-20T16:42:36+03:00"}
+{"level":"info","msg":"Removing product from favorites","product_id":17,"time":"2025-05-20T16:42:36+03:00","user_id":1}
+{"level":"info","msg":"Product removed from favorites","product_id":17,"time":"2025-05-20T16:42:36+03:00","user_id":1}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-20T17:00:01+03:00"}
+{"level":"info","msg":"User logged in successfully","time":"2025-05-20T17:00:01+03:00","user_id":2}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T17:09:53+03:00"}
+{"count":6,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T17:09:53+03:00","user_id":2}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-20T17:14:40+03:00"}
+{"level":"info","msg":"User logged in successfully","time":"2025-05-20T17:14:40+03:00","user_id":1}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T17:14:50+03:00"}
+{"count":2,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T17:14:50+03:00","user_id":1}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-20T17:14:50+03:00"}
+{"count":0,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-20T17:14:50+03:00","user_id":1}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T17:14:51+03:00"}
+{"count":2,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T17:14:51+03:00","user_id":1}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-20T17:18:49+03:00"}
+{"level":"info","msg":"User logged in successfully","time":"2025-05-20T17:18:49+03:00","user_id":1}
+{"level":"info","msg":"AddToBasket endpoint called","time":"2025-05-20T17:18:52+03:00"}
+{"level":"info","msg":"Product added to basket successfully","product_id":14,"time":"2025-05-20T17:18:52+03:00","user_id":1}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T17:18:54+03:00"}
+{"count":2,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T17:18:54+03:00","user_id":1}
+{"level":"info","msg":"AddToBasket endpoint called","time":"2025-05-20T17:19:00+03:00"}
+{"level":"info","msg":"Product added to basket successfully","product_id":13,"time":"2025-05-20T17:19:00+03:00","user_id":1}
+{"level":"info","msg":"AddToBasket endpoint called","time":"2025-05-20T17:19:03+03:00"}
+{"level":"info","msg":"Product added to basket successfully","product_id":1,"time":"2025-05-20T17:19:03+03:00","user_id":1}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T17:19:14+03:00"}
+{"count":2,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T17:19:14+03:00","user_id":1}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T17:19:16+03:00"}
+{"count":2,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T17:19:16+03:00","user_id":1}
+{"level":"info","msg":"RemoveFavorite endpoint called","time":"2025-05-20T17:19:17+03:00"}
+{"level":"info","msg":"Removing product from favorites","product_id":18,"time":"2025-05-20T17:19:17+03:00","user_id":1}
+{"level":"info","msg":"Product removed from favorites","product_id":18,"time":"2025-05-20T17:19:17+03:00","user_id":1}
+{"level":"info","msg":"AddFavorite endpoint called","time":"2025-05-20T17:19:20+03:00"}
+{"level":"info","msg":"Product added to favorites successfully","product_id":3,"time":"2025-05-20T17:19:20+03:00","user_id":1}
+{"level":"info","msg":"AddFavorite endpoint called","time":"2025-05-20T17:19:23+03:00"}
+{"level":"info","msg":"Product added to favorites successfully","product_id":5,"time":"2025-05-20T17:19:23+03:00","user_id":1}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T17:19:24+03:00"}
+{"count":3,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T17:19:25+03:00","user_id":1}
+{"level":"info","msg":"AddFavorite endpoint called","time":"2025-05-20T17:19:33+03:00"}
+{"level":"info","msg":"Product added to favorites successfully","product_id":14,"time":"2025-05-20T17:19:33+03:00","user_id":1}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T17:19:34+03:00"}
+{"count":4,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T17:19:34+03:00","user_id":1}
+{"level":"info","msg":"RemoveFavorite endpoint called","time":"2025-05-20T17:19:41+03:00"}
+{"level":"info","msg":"Removing product from favorites","product_id":3,"time":"2025-05-20T17:19:41+03:00","user_id":1}
+{"level":"info","msg":"Product removed from favorites","product_id":3,"time":"2025-05-20T17:19:41+03:00","user_id":1}
+{"level":"info","msg":"RemoveFavorite endpoint called","time":"2025-05-20T17:19:43+03:00"}
+{"level":"info","msg":"Removing product from favorites","product_id":5,"time":"2025-05-20T17:19:43+03:00","user_id":1}
+{"level":"info","msg":"Product removed from favorites","product_id":5,"time":"2025-05-20T17:19:43+03:00","user_id":1}
+{"level":"info","msg":"Register endpoint called","time":"2025-05-20T17:23:47+03:00"}
+{"level":"info","msg":"User registered successfully","time":"2025-05-20T17:23:47+03:00","user_id":17}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-20T17:24:01+03:00"}
+{"level":"info","msg":"User logged in successfully","time":"2025-05-20T17:24:01+03:00","user_id":2}
+{"level":"info","msg":"AddFavorite endpoint called","time":"2025-05-20T17:24:05+03:00"}
+{"level":"info","msg":"Product added to favorites successfully","product_id":2,"time":"2025-05-20T17:24:05+03:00","user_id":2}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T17:24:06+03:00"}
+{"count":7,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T17:24:06+03:00","user_id":2}
+{"level":"info","msg":"RemoveFavorite endpoint called","time":"2025-05-20T17:24:09+03:00"}
+{"level":"info","msg":"Removing product from favorites","product_id":16,"time":"2025-05-20T17:24:09+03:00","user_id":2}
+{"level":"info","msg":"Product removed from favorites","product_id":16,"time":"2025-05-20T17:24:09+03:00","user_id":2}
+{"level":"info","msg":"RemoveFavorite endpoint called","time":"2025-05-20T17:24:10+03:00"}
+{"level":"info","msg":"Removing product from favorites","product_id":14,"time":"2025-05-20T17:24:10+03:00","user_id":2}
+{"level":"info","msg":"Product removed from favorites","product_id":14,"time":"2025-05-20T17:24:10+03:00","user_id":2}
+{"level":"info","msg":"RemoveFavorite endpoint called","time":"2025-05-20T17:24:11+03:00"}
+{"level":"info","msg":"Removing product from favorites","product_id":13,"time":"2025-05-20T17:24:11+03:00","user_id":2}
+{"level":"info","msg":"Product removed from favorites","product_id":13,"time":"2025-05-20T17:24:11+03:00","user_id":2}
+{"level":"info","msg":"AddToBasket endpoint called","time":"2025-05-20T17:24:13+03:00"}
+{"level":"info","msg":"Product added to basket successfully","product_id":9,"time":"2025-05-20T17:24:13+03:00","user_id":2}
+{"level":"info","msg":"AddToBasket endpoint called","time":"2025-05-20T17:24:14+03:00"}
+{"level":"info","msg":"Product added to basket successfully","product_id":8,"time":"2025-05-20T17:24:14+03:00","user_id":2}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-20T17:24:16+03:00"}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-20T17:24:16+03:00","user_id":2}
+{"level":"info","msg":"RemoveFromBasket endpoint called","time":"2025-05-20T17:24:18+03:00"}
+{"level":"info","msg":"Product removed from basket successfully","product_id":9,"time":"2025-05-20T17:24:18+03:00","user_id":2}
+{"level":"info","msg":"AddToBasket endpoint called","time":"2025-05-20T17:24:25+03:00"}
+{"level":"info","msg":"Product added to basket successfully","product_id":7,"time":"2025-05-20T17:24:25+03:00","user_id":2}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-20T17:24:27+03:00"}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-20T17:24:27+03:00","user_id":2}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-20T17:32:31+03:00"}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-20T17:32:31+03:00"}
+{"count":4,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-20T17:32:31+03:00","user_id":2}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-20T17:32:31+03:00","user_id":2}
+{"level":"info","msg":"Starting application","time":"2025-05-21T13:32:49+03:00"}
+{"level":"info","msg":"Server is running","port":"8080","time":"2025-05-21T13:32:49+03:00"}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-21T13:33:13+03:00"}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-21T13:33:13+03:00"}
+{"count":4,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-21T13:33:13+03:00","user_id":2}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-21T13:33:13+03:00","user_id":2}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-21T13:38:12+03:00"}
+{"level":"info","msg":"User logged in successfully","time":"2025-05-21T13:38:12+03:00","user_id":2}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-21T13:50:30+03:00"}
+{"count":4,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-21T13:50:30+03:00","user_id":2}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-21T13:51:09+03:00"}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-21T13:51:09+03:00","user_id":2}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-21T14:10:37+03:00"}
+{"level":"info","msg":"User logged in successfully","time":"2025-05-21T14:10:37+03:00","user_id":16}
+{"level":"info","msg":"Starting application","time":"2025-05-21T16:29:44+03:00"}
+{"level":"info","msg":"Server is running","port":"8080","time":"2025-05-21T16:29:44+03:00"}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-21T16:30:06+03:00"}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-21T16:30:06+03:00"}
+{"count":1,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-21T16:30:06+03:00","user_id":16}
+{"count":1,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-21T16:30:06+03:00","user_id":16}
+{"level":"info","msg":"AddToBasket endpoint called","time":"2025-05-21T16:30:22+03:00"}
+{"level":"info","msg":"Product added to basket successfully","product_id":8,"time":"2025-05-21T16:30:23+03:00","user_id":16}
+{"level":"info","msg":"AddFavorite endpoint called","time":"2025-05-21T16:30:23+03:00"}
+{"level":"info","msg":"Product added to favorites successfully","product_id":8,"time":"2025-05-21T16:30:23+03:00","user_id":16}
+{"level":"info","msg":"Starting application","time":"2025-05-22T20:50:38+03:00"}
+{"level":"info","msg":"Server is running","port":"8080","time":"2025-05-22T20:50:38+03:00"}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-22T20:51:54+03:00"}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-22T20:51:54+03:00"}
+{"count":2,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-22T20:51:54+03:00","user_id":16}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-22T20:51:54+03:00","user_id":16}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-22T20:51:57+03:00"}
+{"count":2,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-22T20:51:57+03:00","user_id":16}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-22T20:51:58+03:00"}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-22T20:51:58+03:00","user_id":16}
+{"level":"info","msg":"Starting application","time":"2025-05-22T21:51:35+03:00"}
+{"level":"info","msg":"Server is running","port":"8080","time":"2025-05-22T21:51:35+03:00"}
+{"error":"token is malformed: token contains an invalid number of segments","level":"warning","msg":"Invalid token","time":"2025-05-22T21:51:45+03:00"}
+{"error":"token is malformed: token contains an invalid number of segments","level":"warning","msg":"Invalid token","time":"2025-05-22T21:51:45+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:51:55+03:00"}
+{"level":"warning","login":"TemaKu18","msg":"Invalid password","time":"2025-05-22T21:51:55+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:52:43+03:00"}
+{"level":"warning","login":"1234","msg":"Invalid password","time":"2025-05-22T21:52:43+03:00"}
+{"level":"info","msg":"Register endpoint called","time":"2025-05-22T21:53:39+03:00"}
+{"level":"info","msg":"User registered successfully","time":"2025-05-22T21:53:39+03:00","user_id":18}
+{"level":"info","msg":"AddToBasket endpoint called","time":"2025-05-22T21:54:01+03:00"}
+{"error":"user with ID 0 does not exist","level":"error","msg":"Failed to add to basket","time":"2025-05-22T21:54:01+03:00"}
+{"level":"info","msg":"AddFavorite endpoint called","time":"2025-05-22T21:54:23+03:00"}
+{"error":"user with ID 0 does not exist","level":"warning","msg":"Product or user not found","time":"2025-05-22T21:54:23+03:00"}
+{"level":"info","msg":"AddFavorite endpoint called","time":"2025-05-22T21:54:25+03:00"}
+{"error":"user with ID 0 does not exist","level":"warning","msg":"Product or user not found","time":"2025-05-22T21:54:25+03:00"}
+{"level":"info","msg":"AddFavorite endpoint called","time":"2025-05-22T21:54:26+03:00"}
+{"error":"user with ID 0 does not exist","level":"warning","msg":"Product or user not found","time":"2025-05-22T21:54:26+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:54:38+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T21:54:38+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:54:44+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T21:54:44+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:54:44+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T21:54:44+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:54:44+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T21:54:44+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:54:45+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T21:54:45+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:54:45+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T21:54:45+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:54:45+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T21:54:45+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:54:46+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T21:54:46+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:54:46+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T21:54:46+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:55:17+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T21:55:17+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:59:26+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T21:59:27+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T21:59:43+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T21:59:43+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T22:00:05+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T22:00:05+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T22:00:06+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T22:00:06+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T22:01:00+03:00"}
+{"level":"warning","login":"qwerty","msg":"Invalid password","time":"2025-05-22T22:01:00+03:00"}
+{"level":"info","msg":"Starting application","time":"2025-05-22T22:33:34+03:00"}
+{"level":"info","msg":"Server is running","port":"8080","time":"2025-05-22T22:33:35+03:00"}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-22T22:33:56+03:00"}
+{"level":"info","msg":"User logged in successfully","time":"2025-05-22T22:33:56+03:00","user_id":16}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-22T22:33:59+03:00"}
+{"count":2,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-22T22:33:59+03:00","user_id":16}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-22T22:34:00+03:00"}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-22T22:34:00+03:00","user_id":16}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-22T22:34:01+03:00"}
+{"count":2,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-22T22:34:01+03:00","user_id":16}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-22T22:34:02+03:00"}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-22T22:34:02+03:00","user_id":16}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-22T22:34:02+03:00"}
+{"count":2,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-22T22:34:02+03:00","user_id":16}
+{"level":"info","msg":"Starting application","time":"2025-05-26T11:55:13+03:00"}
+{"level":"info","msg":"Server is running","port":"8080","time":"2025-05-26T11:55:13+03:00"}
+{"level":"info","msg":"GetFavorites endpoint called","time":"2025-05-26T11:55:34+03:00"}
+{"level":"info","msg":"GetBasket endpoint called","time":"2025-05-26T11:55:34+03:00"}
+{"count":2,"level":"info","msg":"Favorites retrieved successfully","time":"2025-05-26T11:55:35+03:00","user_id":16}
+{"count":2,"level":"info","msg":"Basket retrieved successfully","time":"2025-05-26T11:55:35+03:00","user_id":16}
+{"level":"info","msg":"Login endpoint called","time":"2025-05-26T12:43:34+03:00"}
+{"level":"info","msg":"User logged in successfully","time":"2025-05-26T12:43:34+03:00","user_id":1}

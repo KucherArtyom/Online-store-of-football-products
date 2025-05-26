@@ -1,0 +1,302 @@
+/* Keep all your existing CSS styles */
+/*.logo-image {
+    position: absolute;
+    width: 200px;
+    height: 180px;
+    top: 10px;
+    left: 450px;
+  }
+  
+  .title-logo {
+    font-family: "Red Hat Text";
+    color: #94BF4C;
+    font-size: 100px;
+    margin-left: 650px;
+    margin-top: 30px;
+  }
+*/
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column; /* Вертикальное расположение */
+  text-align: center; /* Центрирование текста */
+  width: 100%;
+  padding: 20px 0; /* Добавляем отступы */
+}
+
+.logo-image {
+  width: 100px; /* Убедитесь, что пропорции логотипа верны */
+  height: auto; /* Высота автоматически коррелирует с шириной */
+}
+
+.title-logo {
+  font-family: "Red Hat Text";
+  color: #94BF4C;
+  font-size: 2.5rem; /* Используем относительные единицы для адаптивности */
+  margin: 10px 0; /* Объединённые отступы */
+}
+
+  .sidebar {
+  width: 100%;
+  margin-top: 10px;
+  background-color: #94BF4C;
+  }
+  
+  .side-button-tshitr{
+    height: 80px;
+    width: 300px;
+    font-size: 50px;
+    background-color: #94BF4C;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-family: "Red Hat Text";
+  }
+  
+  .side-button-sharf{
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    width: 300px;
+    font-size: 50px;
+    background-color: #94BF4C;
+    color: #ffffff;
+  }
+  
+  .side-button-balls{
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    width: 300px;
+    font-size: 50px;
+    background-color: #94BF4C;
+    color: #ffffff;
+  }
+  
+  .side-button-flags{
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    width: 300px;
+    font-size: 50px;
+    background-color: #94BF4C;
+    color: #ffffff;
+  }
+  
+  .side-button-caps{
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    width: 300px;
+    font-size: 50px;
+    background-color: #94BF4C;
+    color: #ffffff;
+  }
+  
+  .product {
+    display: flex;
+    margin-top: 40px;
+    height: 470px;
+    background-color: #3e3f3a;
+  }
+  
+  .product-line{
+    margin: 10px;
+    margin-top: 10px;
+    width: 400px;
+    height: 400px;
+    background-color: #94BF4C;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .buttons{
+    display: flex;
+    margin-top: 10px;
+    height: 40px;
+    background-color: #3e3f3a;
+  }
+  
+  .buttons-line{
+    margin: 10px;
+    margin-top: 10px;
+    width: 400px;
+    height: 30px;
+    background-color: #94BF4C;
+    display: flex;
+  }
+  
+  .tshirt{
+    margin-left: 5px;
+    max-width: 380px;
+    max-height: 300px;
+    object-fit: contain;
+  }
+  
+  /*.footer {
+    text-align: center;
+    background-color: #3e3f3a;
+    color: #94BF4C;
+    padding: 20px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }*/
+
+  .footer {
+    text-align: center;
+    background-color: #3e3f3a;
+    color: #94BF4C;
+    padding: 20px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .button-bar {
+    /*
+    display: flex;
+    margin-top: 10px;
+    height: 30px;
+    background-color: #3e3f3a;
+    */
+    display: flex;
+  justify-content: space-around; /* Равномерное распределение кнопок */
+  align-items: center; /* Центрирование кнопок по вертикали */
+  margin-top: 10px;
+  background-color: #3e3f3a;
+  padding: 10px 0; /* Добавим отступы сверху и снизу */
+  }
+/*
+  .registration-button{
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: #94BF4C;
+    border: none;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .authorisation-button{
+    margin-left: 60px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: #94BF4C;
+    border: none;
+    color: white;
+    text-decoration: none;
+  }
+  .favourites-button{
+    margin-left: 1000px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: #94BF4C;
+    border: none;
+    color: white;
+    text-decoration: none;
+  }
+  .basket-button{
+    margin-left: 60px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: #94BF4C;
+    border: none;
+    color: white;
+    text-decoration: none;
+  }
+*/
+
+.registration-button,
+.authorisation-button,
+.favourites-button,
+.basket-button {
+  flex: 1; /* Чтобы кнопки растягивались равномерно */
+  margin: 0 10px; /* Отступы между кнопками */
+  background-color: #94BF4C;
+  border: none;
+  color: white;
+  height: 40px; /* Высота кнопок */
+  font-size: 1.5rem; /* Размер шрифта */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.registration-button:hover,
+.authorisation-button:hover,
+.favourites-button:hover,
+.basket-button:hover {
+  background-color: #1c7d17; /* Цвет при наведении */
+}
+
+  .button-basket{
+    display: flex;
+    margin-left: 10px;
+    margin-top: 10px;
+    height: 35px;
+    width: 110px;
+  }
+  .button-favourites{
+    display: flex;
+    margin-left: 180px;
+    margin-top: 10px;
+    height: 35px;
+    width: 110px;
+  }
+
+  /* Стили для карточек товаров */
+.product-line {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.product-line:hover {
+  transform: translateY(-5px);
+}
+
+.tshirt {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.button-basket, .button-favourites {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-basket {
+  background-color: #3e3f3a;
+  color: white;
+}
+
+.button-favourites {
+  background-color: #3e3f3a;
+  color: white;
+}
+
+.button-basket:hover {
+  background-color: #1c7d17;
+}
+
+.button-favourites:hover {
+  background-color: #1c7d17;
+}
+
+a:visited {
+  /* Цвет посещённой ссылки */
+  text-decoration: none; 
+  color:white;
+}
