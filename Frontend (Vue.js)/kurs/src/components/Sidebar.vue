@@ -34,7 +34,6 @@
 </template>
 
 <style scoped>
-/* Общие стили для всех кнопок */
 .side-button {
   display: flex;
   align-items: center;
@@ -57,7 +56,6 @@
   height: 80px;
 }
 
-/* Стили для конкретных кнопок */
 .side-button-tshitr {
   background-color: #94BF4C;
 }
@@ -78,13 +76,11 @@
   background-color: #94BF4C;
 }
 
-/* Стиль для активной ссылки */
 .active {
   background-color: #7aa33a;
   font-weight: bold;
 }
 
-/* Эффект при наведении */
 .side-button:hover {
   background-color: #7aa33a;
 }

@@ -1,20 +1,20 @@
 <template>
   <div id="app" class="col-md-4">
-    <label>Имя</label>
-    <input type="text" v-model="name" placeholder="Введите имя" class="form-control" /><br>
-    <label>Фамилия</label><br>
-    <input type="text" v-model="surname" placeholder="Введите фамилию" class="form-control" /><br>
+    <label>Имя*</label>
+    <input type="text" v-model="formData.name" placeholder="Введите имя (2-20 символов)" class="form-control" required><br>
+    <label>Фамилия*</label>
+    <input type="text" v-model="formData.surname" placeholder="Введите фамилию (2-20 символов)" class="form-control" required><br>
     <label>Отчество</label>
-    <input type="text" v-model="patronymic" placeholder="Введите отчество" class="form-control" /><br>
-    <label>Телефон</label><br>
-    <input type="text" v-model="telephone" placeholder="Введите телефон" class="form-control" /><br>
-    <label>Логин</label>
-    <input type="text" v-model="userLogin" placeholder="Введите логин" class="form-control" /><br>
-    <label>Пароль</label>
-    <input type="password" v-model="password" placeholder="Введите пароль" class="form-control" /><br>
+    <input type="text" v-model="formData.patronymic" placeholder="Введите отчество (до 20 символов)" class="form-control"><br>
+    <label>Телефон*</label>
+    <input type="tel" v-model="formData.telephone" placeholder="Введите телефон" class="form-control" required><br>
+    <label>Логин*</label>
+    <input type="text" v-model="formData.login" placeholder="Введите логин (3-100 символов)" class="form-control" required><br>
+    <label>Пароль*</label>
+    <input type="password" v-model="formData.password" placeholder="Введите пароль (минимум 6 символов)" class="form-control" required><br>
     <button @click="registerUser" class="btn btn-primary">Зарегистрироваться</button>
-
-</div>
+    <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+  </div>
 </template>
 
 <script>
@@ -24,12 +24,14 @@ export default {
   name: 'RegistrationPage',
   data() {
     return {
-      name: '',
-      surname: '',
-      patronymic: '',
-      telephone: '',
-      userLogin: '',
-      password: '',
+      formData: {
+        name: '',
+        surname: '',
+        patronymic: '',
+        telephone: '',
+        login: '',
+        password: ''
+      },
       errorMessage: ''
     };
   },
@@ -38,8 +40,34 @@ export default {
     async registerUser() {
       this.errorMessage = '';
       
-      if (!this.name || !this.surname || !this.telephone || !this.login || !this.password) {
-        this.errorMessage = 'Пожалуйста, заполните все обязательные поля';
+      if (!this.formData.name || !this.formData.surname || !this.formData.telephone || 
+          !this.formData.login || !this.formData.password) {
+        this.errorMessage = 'Пожалуйста, заполните все обязательные поля (помечены *)';
+        return;
+      }
+
+      if (this.formData.name.length < 2 || this.formData.name.length > 20) {
+        this.errorMessage = 'Имя должно быть от 2 до 20 символов';
+        return;
+      }
+
+      if (this.formData.surname.length < 2 || this.formData.surname.length > 20) {
+        this.errorMessage = 'Фамилия должна быть от 2 до 20 символов';
+        return;
+      }
+
+      if (this.formData.patronymic && this.formData.patronymic.length > 20) {
+        this.errorMessage = 'Отчество не должно превышать 20 символов';
+        return;
+      }
+
+      if (this.formData.login.length < 3 || this.formData.login.length > 100) {
+        this.errorMessage = 'Логин должен быть от 3 до 100 символов';
+        return;
+      }
+
+      if (this.formData.password.length < 6) {
+        this.errorMessage = 'Пароль должен быть не менее 6 символов';
         return;
       }
 
@@ -49,38 +77,44 @@ export default {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            name: this.name,
-            surname: this.surname,
-            patronymic: this.patronymic,
-            telephone: this.telephone,
-            login: this.userLogin,
-            password: this.password
-          })
+          body: JSON.stringify(this.formData)
+        });
+
+        if (!response.ok) {
+          let errorMessage = `Ошибка сервера: ${response.status}`;
+          
+          try {
+            const text = await response.text();
+            try {
+              const json = JSON.parse(text);
+              errorMessage = json.message || errorMessage;
+            } catch (e) {
+              errorMessage = text || errorMessage;
+            }
+          } catch (e) {
+          }
+
+          this.errorMessage = errorMessage;
+          return;
+        }
+
+        const data = await response.json();
+        
+        this.login({
+          userName: data.user.login,
+          token: data.token,
+          userId: data.user.id
         });
         
-        const data = await response.json();
-        if (response.ok) {
-          // Автоматически входим после регистрации
-          this.login({
-            userName: this.userLogin,
-            token: data.token || 'dummy-token' // Замените на реальный токен из ответа
-          });
-          
-          // Перенаправляем на главную страницу
-          this.$router.push('/');
-        } else {
-          alert(data.message || 'Ошибка регистрации');
-        }
+        this.$router.push('/');
       } catch (error) {
         console.error('Error:', error);
-        alert('Произошла ошибка при регистрации');
+        this.errorMessage = 'Произошла ошибка при соединении с сервером';
       }
     }
   }
 }
 </script>
-
 
 <style scoped>
 .error-message {

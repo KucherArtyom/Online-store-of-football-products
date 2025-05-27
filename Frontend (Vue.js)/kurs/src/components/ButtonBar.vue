@@ -1,34 +1,3 @@
-<!--<template>
-  <div class="button-bar">
-    <button type="submit" formmethod="get" formaction="registration.html" class="registration-button">
-      <router-link to="/registration">
-      Регистрация
-      </router-link>
-    </button>
-    <button type="submit" formmethod="get" formaction="authorisation.html" class="authorisation-button">
-      <router-link to="/authoristaion">
-      Авторизация
-      </router-link>
-    </button>
-    <button type="submit" formmethod="get" formaction="favourites.html" class="favourites-button">
-      <router-link to="/favourites">
-      Избранное
-      </router-link>
-    </button>
-    <button type="submit" formmethod="get" formaction="basket.html" class="basket-button">
-      <router-link to="/basket">
-      Корзина
-      </router-link>
-    </button>
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'ButtonBar'
-}
-</script>-->
-
 <template>
   <div class="button-bar">
     <button variant="success" v-if="!isAuthenticated" type="submit" formmethod="get" formaction="registration.html" class="registration-button">

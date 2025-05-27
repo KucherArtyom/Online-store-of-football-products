@@ -43,134 +43,73 @@ export default {
     };
   },
   computed: {
-    ...mapState(['basket', 'userId']),
+    ...mapState(['basket', 'userId', 'token']), // Добавляем token в mapState
     totalPrice() {
       return this.basket?.reduce((sum, product) => sum + product.price, 0) || 0
     }
   },
   methods: {
     ...mapMutations(['clearBasket']),
-    /*
-    async placeOrder() {
+    
+async placeOrder() {
       this.errorMessage = '';
-      // Валидация
-      if (!this.country || !this.city || !this.street || !this.house || !this.apartment || !this.bank_card_number) {
+      this.isProcessing = true;
+
+      if (!this.country || !this.city || !this.street || !this.house || !this.bank_card_number) {
         this.errorMessage = 'Пожалуйста, заполните все обязательные поля';
+        this.isProcessing = false;
         return;
       }
 
       if (!this.basket?.length) {
         this.errorMessage = 'Корзина пуста';
+        this.isProcessing = false;
         return;
       }
-      
-      if (!this.userId) {
-        this.errorMessage = 'Пользователь не авторизован';
-        return;
-      }
-      
-      this.isProcessing = true;
-      
+
       try {
-        // Создаем заказ
-        const orderResponse = await fetch('http://localhost:8080/api/orders', {
+        const orderData = {
+          customer_id: this.userId,
+          order_price: this.totalPrice,
+          card_number: this.bank_card_number,
+          products: this.basket.map(p => p.id),
+          address: {
+            country: this.country,
+            city: this.city,
+            street: this.street,
+            house: Number(this.house),
+            apartment: Number(this.apartment) || null
+          }
+        };
+
+        const response = await fetch('http://localhost:8080/api/orders', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.token}`
           },
-          body: JSON.stringify({
-            customer_id: this.userId,
-            order_price: this.totalPrice,
-            card_number: this.bank_card_number,
-            products: this.basket.map(p => p.id),
-            address: {
-              country: this.country,
-              city: this.city,
-              street: this.street,
-              house: this.house,
-              apartment: this.apartment
-            }
-          })
+          body: JSON.stringify(orderData)
         });
-        
 
-        if (!orderResponse.ok) {
-          const errorData = await orderResponse.json();
-          throw new Error(errorData.message || 'Ошибка оформления заказа');
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText || `Ошибка сервера: ${response.status}`);
         }
-        
-        // Очищаем корзину
+
+        const data = await response.json();
         await this.clearBasket();
-        
-        // Перенаправляем на главную с сообщением об успехе
-        this.$router.push({ 
-          path: '/', 
-          query: { orderSuccess: 'true' } 
-        });
-        
+        alert('Заказ успешно оформлен!');
+        this.$router.push({ path: '/', query: { orderSuccess: 'true' } });
       } catch (error) {
-        console.error('Error:', error);
-        this.errorMessage = error.message || 'Произошла ошибка при оформлении заказа';
+        console.error("Ошибка оформления заказа:", error);
+        this.errorMessage = error.message.includes("Failed to") 
+          ? "Ошибка на сервере. Пожалуйста, попробуйте позже."
+          : error.message;
       } finally {
         this.isProcessing = false;
       }
     }
-  }*/
-async placeOrder() {
-  this.errorMessage = '';
-  this.isProcessing = true;
-
-  try {
-    const orderData = {
-      customer_id: this.userId,
-      order_price: this.totalPrice,
-      card_number: this.bank_card_number, // Убедитесь, что это правильное имя переменной
-      products: this.basket.map(p => p.id),
-      address: {
-        country: this.country,
-        city: this.city,
-        street: this.street,
-        house: Number(this.house),
-        apartment: Number(this.apartment) || null
-      }
-    };
-
-    console.log("Отправляемые данные:", orderData);
-
-    const response = await fetch('http://localhost:8080/api/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(orderData)
-    });
-
-    // Клонируем ответ для обработки
-    const responseClone = response.clone();
-    
-    try {
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || `Ошибка сервера: ${response.status}`);
-      }
-      console.log("Успешный ответ:", data);
-      
-      await this.clearBasket();
-      this.$router.push({ path: '/', query: { orderSuccess: 'true' } });
-    } catch (jsonError) {
-      // Если не удалось распарсить JSON, читаем как текст
-      const errorText = await responseClone.text();
-      throw new Error(errorText || `Ошибка: ${response.status}`);
-    }
-  } catch (error) {
-    console.error("Ошибка оформления заказа:", error);
-    this.errorMessage = error.message.includes("Failed to") 
-      ? "Ошибка на сервере. Пожалуйста, попробуйте позже."
-      : error.message;
-  } finally {
-    this.isProcessing = false;
   }
-}}
 }
 </script>
 

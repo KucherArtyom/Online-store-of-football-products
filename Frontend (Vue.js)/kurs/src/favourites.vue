@@ -1,29 +1,3 @@
-<!--<template>
-  <div id="app">
-    <router-view></router-view>
-    <ProductGrid :products="products" />
-  </div>
-</template>
-
-<script>
-import ProductGrid from './components/ProductGrid.vue'
-
-
-export default {
-  name: 'FavouritesPage',
-  components: {
-    ProductGrid
-  },
-  data() {
-    return {
-      products: [
-      ]
-    }
-  }
-}
-</script>-->
-
-
 <template>
   <div>
     <h1>Избранное</h1>
@@ -41,41 +15,6 @@ export default {
   </div>
 </template>
 
-<!--
-<script>
-import ProductGrid from './components/ProductGrid.vue'
-import { mapState, mapActions } from 'vuex';
-
-export default {
-  name: 'FavouritesPage',
-  components: {
-    ProductGrid
-  },
-  computed: {
-    ...mapState(['isAuthenticated', 'favorites'])
-  },
-  async created() {
-    if (this.isAuthenticated) {
-    try {
-      await this.$store.dispatch('fetchFavorites');
-    } catch (error) {
-      console.error('Ошибка загрузки избранного:', error);
-    }
-  }
-  },
-  methods: {
-    ...mapActions(['fetchFavorites', 'removeFromFavorites']),
-    async removeFromFavorites(productId) {
-      try {
-        await this.removeFromFavorites(productId);
-        await this.fetchFavorites(); // Обновляем список после удаления
-      } catch (error) {
-        console.error('Ошибка при удалении из избранного:', error);
-      }
-    }
-  }
-}
-</script>-->
 
 <script>
 import ProductGrid from './components/ProductGrid.vue'
@@ -108,7 +47,7 @@ export default {
     try {
       console.log('Removing product:', productId);
       await this.$store.dispatch('removeFromFavorites', productId);
-      await this.$store.dispatch('fetchFavorites'); // Обновляем список
+      await this.$store.dispatch('fetchFavorites');
     } catch (error) {
       console.error('Remove failed:', error);
       this.$notify({

@@ -1,32 +1,3 @@
-<!--<script setup>
-
-</script>
-
-<template>
-<header class = "flex justify-between">
-  <div>
-    <p>Регистрация</p>
-    <p>Авторизация</p>
-  </div>
-  <div class="flex items-center">
-    <img class ="max-w-[8rem] h-auto object-contain" src="/ball.png" alt="logo"/>
-    <div>
-      <h1 class="title-logo">Footballiks</h1>
-    </div>
-  </div>
-  <div>
-    <p>Избранное</p>
-    <p>Корзина</p>
-  </div>
-</header>
-</template>
-
-<style scoped>
-
-</style>-->
-
-
-
 <template>
   <div id="app">
     <Header />

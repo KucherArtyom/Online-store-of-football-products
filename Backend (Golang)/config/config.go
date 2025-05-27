@@ -9,8 +9,9 @@ import (
 
 type Config struct {
 	App struct {
-		Env  string
-		Port string
+		Env       string
+		Port      string
+		JWTSecret string
 	}
 	Database struct {
 		Host     string
@@ -24,15 +25,14 @@ type Config struct {
 var AppConfig Config
 
 func LoadConfig() {
-	// Загрузка .env файла
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("No .env file found, using system environment variables")
 	}
 
-	// Заполнение конфигурации
 	AppConfig.App.Env = GetEnv("APP_ENV", "development")
 	AppConfig.App.Port = GetEnv("SERVER_PORT", "8080")
+	AppConfig.App.JWTSecret = GetEnv("JWT_SECRET", "supersecretkey") // Добавляем секрет для JWT
 	AppConfig.Database.Host = GetEnv("DB_HOST", "localhost")
 	AppConfig.Database.Port = GetEnv("DB_PORT", "5432")
 	AppConfig.Database.User = GetEnv("DB_USER", "postgres")

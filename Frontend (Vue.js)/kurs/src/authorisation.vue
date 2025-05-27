@@ -23,45 +23,50 @@ export default {
   },
   methods: {
     ...mapMutations({
-      vuexLogin: 'login' // Переименовываем метод Vuex
+      vuexLogin: 'login' 
     }),
-    async loginUser() {
-      this.errorMessage = '';
-      
-      if (!this.login || !this.password) {
-        this.errorMessage = 'Пожалуйста, введите логин и пароль';
-        return;
-      }
-      
-      try {
-        const response = await fetch('http://localhost:8080/api/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            login: this.login,
-            password: this.password
-          })
-        });
+    
+   async loginUser() {
+  this.errorMessage = '';
+  
+  if (!this.login || !this.password) {
+    this.errorMessage = 'Пожалуйста, введите логин и пароль';
+    return;
+  }
+  
+  try {
+    const response = await fetch('http://localhost:8080/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        login: this.login,
+        password: this.password
+      }),
+      credentials: 'include' 
+    });
+    
+    const data = await response.json();
         
-        const data = await response.json();
-            
-            if (response.ok) {
-                this.$store.commit('login', {
-                    userName: data.user.login,  // или data.user.name
-                    token: data.token,
-                    userId: data.user.id  // Важно: сохраняем ID пользователя
-                });
-                this.$router.push('/');
-            } else {
-                this.errorMessage = data.message || 'Ошибка авторизации';
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            this.errorMessage = 'Произошла ошибка при авторизации';
-        }
+    if (response.ok) {
+      localStorage.setItem('authToken', data.token);
+      
+      this.$store.commit('login', {
+        userName: data.user.login,
+        token: data.token,
+        userId: data.user.id
+      });
+      
+      this.$router.push('/');
+    } else {
+      this.errorMessage = data.message || 'Ошибка авторизации';
     }
+  } catch (error) {
+    console.error('Error:', error);
+    this.errorMessage = 'Произошла ошибка при авторизации';
+  }
+}
 }
 }
 </script>

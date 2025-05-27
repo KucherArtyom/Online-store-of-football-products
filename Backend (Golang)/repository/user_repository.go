@@ -15,6 +15,10 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 }
 
 func (r *UserRepository) CreateUser(user *models.User) error {
+	if err := user.HashPassword(); err != nil {
+		return err
+	}
+
 	query := `INSERT INTO customers (name, surname, patronymic, telephone, login, password) 
 	          VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
 
@@ -28,11 +32,7 @@ func (r *UserRepository) CreateUser(user *models.User) error {
 		user.Password,
 	).Scan(&user.ID)
 
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 func (r *UserRepository) IsLoginExists(login string) (bool, error) {
@@ -42,11 +42,31 @@ func (r *UserRepository) IsLoginExists(login string) (bool, error) {
 	return exists, err
 }
 
+func (r *UserRepository) GetUserByLogin(login string) (*models.User, error) {
+	user := &models.User{}
+	query := `SELECT id, name, surname, login, password FROM customers WHERE login = $1`
+	err := r.db.QueryRow(query, login).Scan(
+		&user.ID,
+		&user.Name,
+		&user.Surname,
+		&user.Login,
+		&user.Password,
+	)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return user, nil
+}
+
 func (r *UserRepository) Authenticate(login, password string) (*models.User, error) {
 	user := &models.User{}
 	query := `SELECT id, name, surname FROM customers WHERE login = $1 AND password = $2`
 	err := r.db.QueryRow(query, login, password).Scan(
-		&user.ID, // Убедитесь, что сканируется ID
+		&user.ID,
 		&user.Name,
 		&user.Surname,
 	)
@@ -60,30 +80,25 @@ func (r *UserRepository) Authenticate(login, password string) (*models.User, err
 	return user, nil
 }
 
-// user_repository.go
 func (r *UserRepository) AddToFavorites(userID, productID int) error {
-	// Проверка существования пользователя
 	var userExists bool
 	err := r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM customers WHERE id = $1)", userID).Scan(&userExists)
 	if err != nil || !userExists {
 		return fmt.Errorf("user with ID %d does not exist", userID)
 	}
 
-	// Проверка существования товара
 	var productExists bool
 	err = r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM products WHERE id = $1)", productID).Scan(&productExists)
 	if err != nil || !productExists {
 		return fmt.Errorf("product with ID %d does not exist", productID)
 	}
 
-	// Транзакция
 	tx, err := r.db.Begin()
 	if err != nil {
 		return fmt.Errorf("transaction begin error: %v", err)
 	}
 	defer tx.Rollback()
 
-	// 1. Получаем или создаем запись в favourites
 	var favID int
 	err = tx.QueryRow(`
         WITH inserted AS (
@@ -98,7 +113,6 @@ func (r *UserRepository) AddToFavorites(userID, productID int) error {
 		return fmt.Errorf("favourites creation error: %v", err)
 	}
 
-	// 2. Добавляем связь продукта
 	_, err = tx.Exec(`
         INSERT INTO product_favourites (product_id, favourites_id)
         VALUES ($1, $2)
@@ -112,7 +126,6 @@ func (r *UserRepository) AddToFavorites(userID, productID int) error {
 }
 
 func (r *UserRepository) RemoveFromFavorites(userID, productID int) error {
-	// Удаляем через JOIN для правильного определения связи
 	result, err := r.db.Exec(`
         DELETE FROM product_favourites pf
         USING favourites f
@@ -174,30 +187,25 @@ func (r *UserRepository) GetFavorites(userID int) ([]models.Product, error) {
 	return products, nil
 }
 
-// user_repository.go
 func (r *UserRepository) AddToBasket(userID, productID int) error {
-	// Проверка существования пользователя
 	var userExists bool
 	err := r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM customers WHERE id = $1)", userID).Scan(&userExists)
 	if err != nil || !userExists {
 		return fmt.Errorf("user with ID %d does not exist", userID)
 	}
 
-	// Проверка существования товара
 	var productExists bool
 	err = r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM products WHERE id = $1)", productID).Scan(&productExists)
 	if err != nil || !productExists {
 		return fmt.Errorf("product with ID %d does not exist", productID)
 	}
 
-	// Транзакция
 	tx, err := r.db.Begin()
 	if err != nil {
 		return fmt.Errorf("transaction begin error: %v", err)
 	}
 	defer tx.Rollback()
 
-	// 1. Получаем или создаем запись в baskets
 	var basketID int
 	err = tx.QueryRow(`
         WITH inserted AS (
@@ -212,7 +220,6 @@ func (r *UserRepository) AddToBasket(userID, productID int) error {
 		return fmt.Errorf("basket creation error: %v", err)
 	}
 
-	// 2. Добавляем связь продукта
 	_, err = tx.Exec(`
         INSERT INTO product_baskets (product_id, baskets_id)
         VALUES ($1, $2)

@@ -1,16 +1,21 @@
 package handlers
 
 import (
+	"Go-Kurs/config"
 	"Go-Kurs/logger"
 	"Go-Kurs/models"
 	"Go-Kurs/repository"
+	"Go-Kurs/utils"
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/go-playground/validator/v10"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -36,45 +41,93 @@ func NewAuthHandler(userRepo *repository.UserRepository) *AuthHandler {
 // @Failure 500 {object} map[string]interface{} "Ошибка сервера"
 // @Router /api/register [post]
 func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
-	var user models.User
+	var user struct {
+		Name       string `json:"name" validate:"required,min=2,max=20"`
+		Surname    string `json:"surname" validate:"required,min=2,max=20"`
+		Patronymic string `json:"patronymic" validate:"max=20"`
+		Telephone  string `json:"telephone" validate:"required"`
+		Login      string `json:"login" validate:"required,min=3,max=100"`
+		Password   string `json:"password" validate:"required,min=6,max=100"`
+	}
+
 	logger.Log.Info("Register endpoint called")
 
-	// Декодируем JSON из тела запроса
-	err := json.NewDecoder(r.Body).Decode(&user)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
+		logger.Log.WithError(err).Error("Failed to read request body")
+		http.Error(w, "Failed to read request body", http.StatusBadRequest)
+		return
+	}
+	logger.Log.WithField("request_body", string(body)).Debug("Raw request body")
+
+	if err := json.Unmarshal(body, &user); err != nil {
 		logger.Log.WithError(err).Error("Failed to decode registration request")
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, fmt.Sprintf("Invalid request format: %v", err), http.StatusBadRequest)
 		return
 	}
 
-	// Проверяем, существует ли уже такой логин
-	exists, err := h.userRepo.IsLoginExists(user.Login)
+	validate := validator.New()
+	if err := validate.Struct(user); err != nil {
+		logger.Log.WithError(err).Error("Validation failed")
+
+		var errorMsg string
+		for _, err := range err.(validator.ValidationErrors) {
+			errorMsg += fmt.Sprintf("Field '%s' failed validation (%s); ", err.Field(), err.Tag())
+		}
+
+		http.Error(w, errorMsg, http.StatusBadRequest)
+		return
+	}
+
+	dbUser := models.User{
+		Name:       user.Name,
+		Surname:    user.Surname,
+		Patronymic: user.Patronymic,
+		Telephone:  user.Telephone,
+		Login:      user.Login,
+		Password:   user.Password,
+	}
+
+	exists, err := h.userRepo.IsLoginExists(dbUser.Login)
 	if err != nil {
 		logger.Log.WithError(err).Error("Database error during login check")
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
 	if exists {
-		logger.Log.WithField("login", user.Login).Warn("Login already exists")
+		logger.Log.WithField("login", dbUser.Login).Warn("Login already exists")
 		http.Error(w, "Login already exists", http.StatusConflict)
 		return
 	}
 
-	// Создаем пользователя
-	err = h.userRepo.CreateUser(&user)
+	err = h.userRepo.CreateUser(&dbUser)
 	if err != nil {
 		logger.Log.WithError(err).Error("Failed to create user")
 		http.Error(w, "Failed to create user", http.StatusInternalServerError)
 		return
 	}
-	logger.Log.WithField("user_id", user.ID).Info("User registered successfully")
-	// Отправляем успешный ответ
+
+	token, err := dbUser.GenerateJWT(config.AppConfig.App.JWTSecret)
+	if err != nil {
+		logger.Log.WithError(err).Error("Failed to generate token")
+		http.Error(w, "Failed to generate token", http.StatusInternalServerError)
+		return
+	}
+
+	logger.Log.WithField("user_id", dbUser.ID).Info("User registered successfully")
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
 		"message": "User registered successfully",
-		"userId":  user.ID,
+		"token":   token,
+		"user": map[string]interface{}{
+			"id":      dbUser.ID,
+			"name":    dbUser.Name,
+			"surname": dbUser.Surname,
+			"login":   dbUser.Login,
+		},
 	})
 }
 
@@ -100,16 +153,23 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := h.userRepo.Authenticate(credentials.Login, credentials.Password)
+	user, err := h.userRepo.GetUserByLogin(credentials.Login)
 	if err != nil {
 		logger.Log.WithError(err).Error("Database error during authentication")
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
 
-	if user == nil {
+	if user == nil || !user.CheckPassword(credentials.Password) {
 		logger.Log.WithField("login", credentials.Login).Warn("Invalid login attempt")
 		http.Error(w, "Invalid login or password", http.StatusUnauthorized)
+		return
+	}
+
+	token, err := user.GenerateJWT(config.AppConfig.App.JWTSecret)
+	if err != nil {
+		logger.Log.WithError(err).Error("Failed to generate token")
+		http.Error(w, "Failed to generate token", http.StatusInternalServerError)
 		return
 	}
 
@@ -119,9 +179,9 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
 		"message": "Login successful",
-		"token":   "generated-jwt-token",
+		"token":   token,
 		"user": map[string]interface{}{
-			"id":      user.ID, // Убедитесь, что возвращается правильный ID
+			"id":      user.ID,
 			"name":    user.Name,
 			"surname": user.Surname,
 			"login":   credentials.Login,
@@ -205,12 +265,11 @@ func (h *AuthHandler) AddFavorite(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} map[string]interface{} "Ошибка сервера"
 // @Router /api/favorites/remove [post]
 func (h *AuthHandler) RemoveFavorite(w http.ResponseWriter, r *http.Request) {
-	log.Println("RemoveFavorite endpoint hit") // Логирование
+	log.Println("RemoveFavorite endpoint hit")
 	logger.Log.Info("RemoveFavorite endpoint called")
 
-	var request models.Request // Используем новый тип
+	var request models.Request
 
-	// Логируем тело запроса
 	body, _ := io.ReadAll(r.Body)
 	log.Printf("Request body: %s", string(body))
 	logger.Log.WithField("request_body", string(body)).Debug("RemoveFavorite request body")
@@ -303,7 +362,7 @@ func (h *AuthHandler) GetFavorites(w http.ResponseWriter, r *http.Request) {
 func (h *AuthHandler) AddToBasket(w http.ResponseWriter, r *http.Request) {
 	logger.Log.Info("AddToBasket endpoint called")
 
-	var request models.Request // Используем новый тип
+	var request models.Request
 
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		logger.Log.WithError(err).Error("Invalid request format in AddToBasket")
@@ -350,7 +409,7 @@ func (h *AuthHandler) AddToBasket(w http.ResponseWriter, r *http.Request) {
 func (h *AuthHandler) RemoveFromBasket(w http.ResponseWriter, r *http.Request) {
 	logger.Log.Info("RemoveFromBasket endpoint called")
 
-	var request models.Request // Используем новый тип
+	var request models.Request
 
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		logger.Log.WithError(err).Error("Invalid request format in RemoveFromBasket")
@@ -435,10 +494,8 @@ func (h *AuthHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 	logger.Log.Info("CreateOrder endpoint called")
 	w.Header().Set("Content-Type", "application/json")
 
-	// Логирование входящего запроса
 	log.Println("Incoming order request")
 
-	// Читаем тело запроса только один раз
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		logger.Log.WithError(err).Error("Failed to read request body")
@@ -452,9 +509,8 @@ func (h *AuthHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 	logger.Log.WithField("request_body", string(body)).Debug("CreateOrder request")
 	log.Printf("Request body: %s", string(body))
 
-	var request models.OrderRequest // Используем новый тип
+	var request models.OrderRequest
 
-	// Используем уже прочитанное тело
 	if err := json.Unmarshal(body, &request); err != nil {
 		logger.Log.WithError(err).Error("Failed to decode JSON in CreateOrder")
 		log.Printf("JSON decode error: %v", err)
@@ -466,7 +522,6 @@ func (h *AuthHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 	logger.Log.WithField("request", request).Debug("Parsed CreateOrder request")
 	log.Printf("Parsed request: %+v", request)
 
-	// Валидация
 	if request.CustomerID == 0 || len(request.Products) == 0 {
 		logger.Log.Warn("Missing required fields in CreateOrder")
 		w.WriteHeader(http.StatusBadRequest)
@@ -474,7 +529,6 @@ func (h *AuthHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Начинаем транзакцию
 	tx, err := h.userRepo.GetDB().Begin()
 	if err != nil {
 		logger.Log.WithError(err).Error("Failed to begin transaction")
@@ -490,7 +544,6 @@ func (h *AuthHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
-	// 1. Создаем адрес
 	var addressID int
 	err = tx.QueryRow(`
         INSERT INTO addresses (customer_id, country, city, street, house, apartment)
@@ -506,7 +559,6 @@ func (h *AuthHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 2. Создаем заказ
 	var orderID int
 	err = tx.QueryRow(`
         INSERT INTO orders (customer_id, order_price, card_number, order_date)
@@ -521,7 +573,6 @@ func (h *AuthHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 3. Добавляем продукты в заказ
 	for _, productID := range request.Products {
 		_, err = tx.Exec(`
             INSERT INTO product_order (product_id, order_id)
@@ -536,7 +587,6 @@ func (h *AuthHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// 4. Создаем доставку
 	_, err = tx.Exec(`
         INSERT INTO deliveries (order_id, address_id, status, expected_receive_date)
         VALUES ($1, $2, 'Заказ собирается', NOW() + interval '4 days')
@@ -549,7 +599,6 @@ func (h *AuthHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 5. Очищаем корзину
 	_, err = tx.Exec(`
         DELETE FROM product_baskets pb
         USING baskets b
@@ -563,7 +612,6 @@ func (h *AuthHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Фиксируем транзакцию
 	if err = tx.Commit(); err != nil {
 		logger.Log.WithError(err).Error("Failed to commit transaction")
 		log.Printf("Transaction commit error: %v", err)
@@ -578,7 +626,6 @@ func (h *AuthHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 		"item_count":  len(request.Products),
 	}).Info("Order created successfully")
 
-	// Успешный ответ
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success":  true,
 		"message":  "Order created successfully",
@@ -638,5 +685,26 @@ func (h *AuthHandler) ClearBasket(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
 		"message": fmt.Sprintf("Cleared %d items from basket", rowsAffected),
+	})
+}
+
+func (h *AuthHandler) AuthMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authHeader := r.Header.Get("Authorization")
+		if authHeader == "" {
+			logger.Log.Warn("Authorization header missing")
+			http.Error(w, "Authorization header required", http.StatusUnauthorized)
+			return
+		}
+
+		claims, err := utils.ParseToken(authHeader, config.AppConfig.App.JWTSecret)
+		if err != nil {
+			logger.Log.WithError(err).Warn("Invalid token")
+			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			return
+		}
+
+		ctx := context.WithValue(r.Context(), "userClaims", claims)
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

@@ -5,10 +5,10 @@ export default createStore({
     return {
       isAuthenticated: false,
       userName: '',
-      userId: null, // Добавляем ID пользователя
+      userId: null, 
       token: null,
-      favorites: [], // Добавляем список избранного
-      basket: [] // Добавляем состояние для корзины
+      favorites: [], 
+      basket: [] 
     };
   },
   mutations: {
@@ -16,10 +16,10 @@ export default createStore({
       state.isAuthenticated = true;
       state.userName = userName;
       state.token = token;
-      state.userId = userId;  // Сохраняем userId
+      state.userId = userId; 
       localStorage.setItem('authToken', token);
       localStorage.setItem('userName', userName);
-      localStorage.setItem('userId', userId);  // Сохраняем в localStorage
+      localStorage.setItem('userId', userId); 
   },
     logout(state) {
       state.isAuthenticated = false;
@@ -34,12 +34,12 @@ export default createStore({
     initializeStore(state) {
       const token = localStorage.getItem('authToken');
       const userName = localStorage.getItem('userName');
-      const userId = localStorage.getItem('userId');  // Восстанавливаем userId
+      const userId = localStorage.getItem('userId'); 
       if (token && userName && userId) {
           state.isAuthenticated = true;
           state.userName = userName;
           state.token = token;
-          state.userId = parseInt(userId);  // Преобразуем в число
+          state.userId = parseInt(userId);
           this.dispatch('fetchFavorites');
           this.dispatch('fetchBasket');
       }
@@ -71,50 +71,37 @@ export default createStore({
     }
   },
   actions: {
-    async addToFavorites({ commit, state }, productId) {
-      if (!state.isAuthenticated) {
-          throw new Error('Необходима авторизация');
-      }
-      if (!state.userId) {
-        throw new Error('User ID not available');
+    
+  async addToFavorites({ commit, state }, productId) {
+  if (!state.isAuthenticated) {
+    throw new Error('Необходима авторизация');
+  }
+  
+  try {
+    const response = await fetch('http://localhost:8080/api/favorites/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state.token}`
+      },
+      body: JSON.stringify({ 
+        user_id: state.userId,
+        product_id: productId 
+      })
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Ошибка сервера');
     }
-      
-      try {
-          const response = await fetch('http://localhost:8080/api/favorites/add', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${state.token}`
-              },
-              body: JSON.stringify({ 
-                user_id: state.userId,
-                product_id: productId 
-              })
-          });
-          
-          // Клонируем ответ перед чтением
-          const responseClone = response.clone();
-          
-          let data;
-          try {
-              data = await response.json();
-          } catch (e) {
-              // Если не удалось распарсить JSON, читаем как текст из клонированного ответа
-              const text = await responseClone.text();
-              throw new Error(text || `HTTP error! status: ${response.status}`);
-          }
-          
-          if (!response.ok) {
-              throw new Error(data.error || data.message || `Ошибка сервера: ${response.status}`);
-          }
-          
-          commit('addFavorite', { id: productId });
-          return true;
-      } catch (error) {
-          console.error('Ошибка при добавлении в избранное:', error);
-          throw error;
-      }
-  },
+    
+    commit('addFavorite', { id: productId });
+    return await response.json();
+  } catch (error) {
+    console.error('Ошибка при добавлении в избранное:', error);
+    throw error;
+  }
+},
     async removeFromFavorites({ commit, state }, productId) {
   try {
     console.log('Sending remove request:', { 
@@ -128,7 +115,7 @@ export default createStore({
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${state.token}`
       },
-      credentials: 'include', // Важно для CORS с куками
+      credentials: 'include',
       body: JSON.stringify({
         user_id: state.userId,
         product_id: productId
