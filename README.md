@@ -43,6 +43,35 @@ npm run dev
 ## Диаграмма последовательности "Процесс оформления заказа"
 ![Диаграмма последовательности Процесс оформления заказа](https://github.com/user-attachments/assets/43ed3674-76c7-42f7-ab69-e1ed7c8f04b8)
 
+## Таблица "Товары"
+![Товары](https://github.com/user-attachments/assets/1a872859-d450-4eb2-bed1-fc019e2f673f)
+
+## Таблица "Производители"
+![Производители](https://github.com/user-attachments/assets/85b772fd-9ae9-49b6-913c-0fad1c1d40ec)
+
+## Таблица "Категории"
+![Категории](https://github.com/user-attachments/assets/dddafbfc-cd45-430b-af5c-6804f5a8154a)
+
+## Таблица "Избранное"
+![Избранное](https://github.com/user-attachments/assets/c0f2f2e2-5076-4dfb-bd41-b6d34be020ca)
+
+## Таблица "Продукт_Избранное"
+![Продукт_Избранное](https://github.com/user-attachments/assets/21c0ec06-775d-4269-bb9d-93297f367db8)
+
+## Таблица "Корзины"
+![Корзины](https://github.com/user-attachments/assets/41a9c274-71f5-40f3-930c-691777c4dfac)
+
+## Таблица "Продукт_Корзина"
+![Продукт_Корзина](https://github.com/user-attachments/assets/c28fe658-dba5-4a6e-b4da-31dc37e67e69)
+
+## Таблица "Заказы"
+![Заказы](https://github.com/user-attachments/assets/752fba8b-73aa-4a7b-a38f-1fed89eaa22b)
+
+## Таблица "Продукт_Заказ"
+![Продукт_Заказ](https://github.com/user-attachments/assets/aadec879-dab4-4b44-b4d7-b1e53341d315)
+
+## Таблица "Пользователи"
+
 ## Главная страница сайта
 ![Главная страница](https://github.com/user-attachments/assets/09facf58-cd42-4c8d-bfa1-3b94cc3fc11f)
 
