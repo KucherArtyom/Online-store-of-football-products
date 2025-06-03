@@ -71,6 +71,7 @@ npm run dev
 ![Продукт_Заказ](https://github.com/user-attachments/assets/aadec879-dab4-4b44-b4d7-b1e53341d315)
 
 ## Таблица "Пользователи"
+![Пользователи](https://github.com/user-attachments/assets/5ac8ba09-61e2-4352-b920-17920648a95d)
 
 ## Главная страница сайта
 ![Главная страница](https://github.com/user-attachments/assets/09facf58-cd42-4c8d-bfa1-3b94cc3fc11f)
