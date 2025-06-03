@@ -105,3 +105,6 @@ npm run dev
 
 ## Страница оформления заказа
 ![Страница оформления заказа](https://github.com/user-attachments/assets/30689959-1adf-4899-b760-6b8c9b016a50)
+
+## Логирование
+![Логирование - содержимое файла app log](https://github.com/user-attachments/assets/f9f592b3-260e-4525-85ea-e14c8f5a9c98)
